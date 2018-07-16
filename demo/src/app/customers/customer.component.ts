@@ -8,7 +8,7 @@ import { Customer } from './customer';
     templateUrl: './app/customers/customer.component.html'
 })
 export class CustomerComponent  {
-    customer: Customer= new Customer();
+    customer: Customer = new Customer();
 
     save(customerForm: NgForm) {
         console.log(customerForm.form);

@@ -3,5 +3,6 @@ node_modules
 .vscode
 .idea
 
+*.map
 *.js
 !systemjs.config.js
