@@ -23,8 +23,25 @@ export class CustomerComponent implements OnInit {
         });
     }
 
-    save() {
+    save(): void {
         console.log(this.customerForm);
         console.log('Saved: ' + JSON.stringify(this.customerForm));
+    }
+
+    populateAll(): void {
+        // attribute names of the object passed into setValue must match the names of the formControl
+        this.customerForm.setValue({
+            firstName: 'Jack',
+            lastName: 'Ma',
+            email: 'Jack.Ma@alibaba.com',
+            sendCatalog: false
+        });
+    }
+
+    populateEmail(): void {
+        // attribute names of the object passed into setValue must match the names of the formControl
+        this.customerForm.patchValue({
+            email: 'me@aexample.com',
+        });
     }
 }
