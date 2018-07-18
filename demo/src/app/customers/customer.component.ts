@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Customer } from './customer';
 
@@ -13,13 +13,17 @@ export class CustomerComponent implements OnInit {
     // Data model
     customer: Customer = new Customer();
 
+    constructor(private fb: FormBuilder) {
+    }
+
     ngOnInit(): void {
-        // Creating the form model
-        this.customerForm = new FormGroup({
-          firstName: new FormControl(),
-          lastName: new FormControl(),
-          email: new FormControl(),
-          sendCatalog: new FormControl(true),
+        // Creating the form model with form group
+        this.customerForm = this.fb.group({
+            firstName: 'default value',
+            // the keys in the object below are valid HTML properties for input element
+            lastName: {value: 'N/A', disabled: true},
+            email: 'default value',
+            sendCatalog: true
         });
     }
 
@@ -41,7 +45,7 @@ export class CustomerComponent implements OnInit {
     populateEmail(): void {
         // attribute names of the object passed into setValue must match the names of the formControl
         this.customerForm.patchValue({
-            email: 'me@aexample.com',
+            email: 'me@aexample.com'
         });
     }
 }
