@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Customer } from './customer';
 
@@ -19,10 +19,9 @@ export class CustomerComponent implements OnInit {
     ngOnInit(): void {
         // Creating the form model with form group
         this.customerForm = this.fb.group({
-            firstName: 'default value',
-            // the keys in the object below are valid HTML properties for input element
-            lastName: {value: 'N/A', disabled: true},
-            email: 'default value',
+            firstName: ['default value', [Validators.required, Validators.minLength(3)]],
+            lastName: ['default value', [Validators.required, Validators.maxLength(50)]],
+            email: ['default value', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
             sendCatalog: true
         });
     }
