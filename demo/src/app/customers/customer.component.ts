@@ -21,7 +21,9 @@ export class CustomerComponent implements OnInit {
         this.customerForm = this.fb.group({
             firstName: ['default value', [Validators.required, Validators.minLength(3)]],
             lastName: ['default value', [Validators.required, Validators.maxLength(50)]],
-            email: ['default value', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
+            email: ['default@email.com', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
+            phone: '',
+            notification: 'email',
             sendCatalog: true
         });
     }
@@ -31,6 +33,7 @@ export class CustomerComponent implements OnInit {
         console.log('Saved: ' + JSON.stringify(this.customerForm));
     }
 
+    /*
     populateAll(): void {
         // attribute names of the object passed into setValue must match the names of the formControl
         this.customerForm.setValue({
@@ -46,5 +49,20 @@ export class CustomerComponent implements OnInit {
         this.customerForm.patchValue({
             email: 'me@aexample.com'
         });
+    }
+    */
+
+    /**
+     * Demonstrate how to update validators during runtime as per user inputs
+     * @param notifyBy
+     */
+    setNotification(notifyBy: string): void {
+        const phoneControl = this.customerForm.get('phone');
+        if (notifyBy === 'text') {
+            phoneControl.setValidators(Validators.required);
+        } else {
+            phoneControl.clearValidators();
+        }
+        phoneControl.updateValueAndValidity();
     }
 }
