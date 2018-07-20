@@ -15,7 +15,7 @@
 
             <fieldset>
                 <div class="form-group"
-                    [ngClass]="{'has-error': (customerForm.get('firstName').touched || customerForm.get('firstName').dirty) && !customerForm.get('firstName').valid }">
+                     [ngClass]="{'has-error': (customerForm.get('firstName').touched || customerForm.get('firstName').dirty) && !customerForm.get('firstName').valid }">
                     <label class="col-md-2 control-label"
                            for="firstNameId">First Name</label>
 
@@ -24,12 +24,13 @@
                                id="firstNameId"
                                type="text"
                                placeholder="First Name (required)"
-                               formControlName="firstName" />
-                      <!--
-                      Use formControlName attribute to bind this input element to firstName formControl variable
-                      -->
+                               formControlName="firstName"/>
+                        <!--
+                        Use formControlName attribute to bind this input element to firstName formControl variable
+                        -->
 
-                        <span class="help-block" *ngIf="(customerForm.get('firstName').touched || customerForm.get('firstName').dirty) && customerForm.get('firstName').errors">
+                        <span class="help-block"
+                              *ngIf="(customerForm.get('firstName').touched || customerForm.get('firstName').dirty) && customerForm.get('firstName').errors">
                             <span *ngIf="customerForm.get('firstName').errors.required">
                                 Please enter your first name.
                             </span>
@@ -37,25 +38,26 @@
                                 The first name must be longer than 3 characters.
                             </span>
                         </span>
-                      <!--
-                      Notice the errors: firstNameVar.errors.minlength and firstNameVar.errors.required
-                      The two error attribute names match the validation attribute we placed on the HTML elements
-                      -->
+                        <!--
+                        Notice the errors: firstNameVar.errors.minlength and firstNameVar.errors.required
+                        The two error attribute names match the validation attribute we placed on the HTML elements
+                        -->
                     </div>
                 </div>
 
                 <div class="form-group"
-                    [ngClass]="{'has-error': (customerForm.get('lastName').touched || customerForm.get('lastName').dirty) && !customerForm.get('lastName').valid }">
+                     [ngClass]="{'has-error': (customerForm.get('lastName').touched || customerForm.get('lastName').dirty) && !customerForm.get('lastName').valid }">
                     <label class="col-md-2 control-label"
-                        for="lastNameId">Last Name</label>
+                           for="lastNameId">Last Name</label>
 
                     <div class="col-md-8">
                         <input class="form-control"
                                id="lastNameId"
                                type="text"
                                placeholder="Last Name (required)"
-                               formControlName="lastName" />
-                        <span class="help-block" *ngIf="(customerForm.get('lastName').touched || customerForm.get('lastName').dirty) && customerForm.get('lastName').errors">
+                               formControlName="lastName"/>
+                        <span class="help-block"
+                              *ngIf="(customerForm.get('lastName').touched || customerForm.get('lastName').dirty) && customerForm.get('lastName').errors">
                             <span *ngIf="customerForm.get('lastName').errors.required">
                                 Please enter your last name.
                             </span>
@@ -106,18 +108,19 @@
                     </div>
                 </div>
 
-                    <div class="form-group"
-                    [ngClass]="{'has-error': (customerForm.get('email').touched || customerForm.get('email').dirty) && !customerForm.get('email').valid }">
+                <div class="form-group"
+                     [ngClass]="{'has-error': (customerForm.get('email').touched || customerForm.get('email').dirty) && !customerForm.get('email').valid }">
                     <label class="col-md-2 control-label"
-                        for="emailId">Email</label>
+                           for="emailId">Email</label>
 
                     <div class="col-md-8">
                         <input class="form-control"
                                id="emailId"
                                type="email"
                                placeholder="Email (required)"
-                               formControlName="email" />
-                        <span class="help-block" *ngIf="(customerForm.get('email').touched || customerForm.get('email').dirty) && customerForm.get('email').errors">
+                               formControlName="email"/>
+                        <span class="help-block"
+                              *ngIf="(customerForm.get('email').touched || customerForm.get('email').dirty) && customerForm.get('email').errors">
                             <span *ngIf="customerForm.get('email').errors.required">
                                 Please enter your email address.
                             </span>
@@ -134,16 +137,16 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-offset-1 col-md-8 checkbox" >
+                    <div class="col-md-offset-1 col-md-8 checkbox">
                         <label>
                             <input id="sendCatalogId"
                                    type="checkbox"
-                                   formControlName="sendCatalog" >
+                                   formControlName="sendCatalog">
                             Send me your catalog
                         </label>
                     </div>
                 </div>
-<!--
+                <!--
                 <div *ngIf="customer.sendCatalog">
                     <div class="form-group" >
                         <label class="col-md-2 control-label">Address Type</label>
@@ -229,7 +232,7 @@
                         </div>
                     </div>
                 </div>
--->
+                -->
                 <div class="form-group">
                     <div class="col-md-4 col-md-offset-2">
                         <span>

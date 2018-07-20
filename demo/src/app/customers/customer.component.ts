@@ -33,6 +33,20 @@ export class CustomerComponent implements OnInit {
         console.log('Saved: ' + JSON.stringify(this.customerForm));
     }
 
+    /**
+     * Demonstrate how to update validators during runtime as per user inputs
+     * @param notifyBy
+     */
+    setNotification(notifyBy: string): void {
+        const phoneControl = this.customerForm.get('phone');
+        if (notifyBy === 'text') {
+            phoneControl.setValidators(Validators.required);
+        } else {
+            phoneControl.clearValidators();
+        }
+        phoneControl.updateValueAndValidity();
+    }
+
     /*
     populateAll(): void {
         // attribute names of the object passed into setValue must match the names of the formControl
@@ -51,18 +65,4 @@ export class CustomerComponent implements OnInit {
         });
     }
     */
-
-    /**
-     * Demonstrate how to update validators during runtime as per user inputs
-     * @param notifyBy
-     */
-    setNotification(notifyBy: string): void {
-        const phoneControl = this.customerForm.get('phone');
-        if (notifyBy === 'text') {
-            phoneControl.setValidators(Validators.required);
-        } else {
-            phoneControl.clearValidators();
-        }
-        phoneControl.updateValueAndValidity();
-    }
 }
