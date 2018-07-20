@@ -1,7 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Customer } from './customer';
+
+/**
+ * Custom validator function:
+ * The parameter is either a formControl or a formGroup
+ * If validation succeeds without error, the function returns null
+ * Otherwise, the function returns a set of key-value pairs,
+ * string defines the broken validation rule, value "true" means error exists
+ */
+function ratingRange(control: AbstractControl): { [key: string]: boolean } | null {
+    const input = control.value;
+    if (input !== undefined && (isNaN(input) || input < 1 || input > 5)) {
+        //
+        return { 'range': true };
+    } else {
+        return null;
+    }
+}
 
 @Component({
     selector: 'my-signup',
@@ -24,6 +41,7 @@ export class CustomerComponent implements OnInit {
             email: ['default@email.com', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
             phone: '',
             notification: 'email',
+            rating: ['', ratingRange],
             sendCatalog: true
         });
     }
