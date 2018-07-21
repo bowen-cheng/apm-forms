@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { Customer } from './customer';
 
@@ -18,6 +18,21 @@ function ratingRange(control: AbstractControl): { [key: string]: boolean } | nul
     } else {
         return null;
     }
+}
+
+/**
+ * If we want to use the validator function with parameters, it needs to be wrapped within a factory function which returns it.
+ */
+function ratingRangeWithParams(min: number, max: number): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+        const input = control.value;
+        if (input !== undefined && (isNaN(input) || input < min || input > max)) {
+            //
+            return { 'range': true };
+        } else {
+            return null;
+        }
+    };
 }
 
 @Component({
@@ -41,7 +56,7 @@ export class CustomerComponent implements OnInit {
             email: ['default@email.com', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
             phone: '',
             notification: 'email',
-            rating: ['', ratingRange],
+            rating: ['', ratingRangeWithParams(1, 5)],
             sendCatalog: true
         });
     }
