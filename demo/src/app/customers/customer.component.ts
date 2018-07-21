@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { Customer } from './customer';
 
@@ -13,7 +13,7 @@ import { Customer } from './customer';
 function ratingRange(control: AbstractControl): { [key: string]: boolean } | null {
     const input = control.value;
     if (input !== undefined && (isNaN(input) || input < 1 || input > 5)) {
-        //
+        // the returned rule name matches the one defined in the HTML (range)
         return { 'range': true };
     } else {
         return null;
@@ -27,7 +27,7 @@ function ratingRangeWithParams(min: number, max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
         const input = control.value;
         if (input !== undefined && (isNaN(input) || input < min || input > max)) {
-            //
+            // the returned rule name matches the one defined in the HTML (range)
             return { 'range': true };
         } else {
             return null;
