@@ -108,7 +108,7 @@
                     </div>
                 </div>
 
-                <div formGroupName="emailGroup">
+                <div formGroupName="emailGroup" [ngClass]="{'has-error': customerForm.get('emailGroup').errors}">
                     <div class="form-group"
                          [ngClass]="{'has-error': (customerForm.get('emailGroup.email').touched || customerForm.get('emailGroup.email').dirty) && !customerForm.get('emailGroup.email').valid }">
                         <label class="col-md-2 control-label"
@@ -140,7 +140,7 @@
                     <div class="form-group"
                          [ngClass]="{'has-error': (customerForm.get('emailGroup.confirmEmail').touched || customerForm.get('emailGroup.confirmEmail').dirty) && !customerForm.get('emailGroup.confirmEmail').valid }">
                         <label class="col-md-2 control-label"
-                           for="confirmEmailId">Confirm Email</label>
+                               for="confirmEmailId">Confirm Email</label>
 
                         <div class="col-md-8">
                             <input class="form-control"
@@ -149,10 +149,24 @@
                                    placeholder="Confirm Email (required)"
                                    formControlName="confirmEmail"/>
                             <span class="help-block"
-                                  *ngIf="(customerForm.get('emailGroup.confirmEmail').touched || customerForm.get('emailGroup.confirmEmail').dirty) && customerForm.get('emailGroup.confirmEmail').errors">
-                                <span *ngIf="customerForm.get('emailGroup.confirmEmail').errors.required">
+                                  *ngIf="(customerForm.get('emailGroup.confirmEmail').touched || customerForm.get('emailGroup.confirmEmail').dirty)
+                                        && (customerForm.get('emailGroup.confirmEmail').errors || customerForm.get('emailGroup').errors)">
+                                <!--
+                                We need to check the errors on the group, not just on the form control.
+                                This is because match rule comes from the validation function that is added to the emailGroup formGroup
+                                -->
+                                <span *ngIf="customerForm.get('emailGroup.confirmEmail').errors?.required">
                                     Please confirm your email address.
                                 </span>
+                                <span *ngIf="customerForm.get('emailGroup').errors?.match">
+                                    Your email address does not match.
+                                </span>
+                                <!--
+                                Because now we display this span if confirmEmail OR emailGroup has error, we need to add
+                                the safe navigator (?) to the two message boxes to make sure we don't read properties
+                                from error in case it is null.
+                                Otherwise, JS will throw an error and our validation logic will be broken.
+                                -->
                             </span>
                         </div>
                     </div>

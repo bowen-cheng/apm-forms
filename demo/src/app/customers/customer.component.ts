@@ -3,6 +3,31 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 
 import { Customer } from './customer';
 
+////////////////////////////////////////
+// Validator functions (Cross field)
+////////////////////////////////////////
+
+function emailMatcher(control: AbstractControl): { [key: string]: boolean } | null {
+    // Get the form controls by their formControlName
+    const emailControl = control.get('email');
+    const confirmControl = control.get('confirmEmail');
+    if (emailControl.pristine || confirmControl.pristine) {
+        return null;
+    }
+    if (emailControl.value === confirmControl.value) {
+        return null;
+    } else {
+        // key ('match') is the validation rule
+        // this adds the validation error to the *formGroup*, NOT the individual formControl
+        // Because the validator function is added to the group, not to the individual formControls
+        return { 'match': true };
+    }
+}
+
+////////////////////////////////////////
+// Validator functions (single field)
+////////////////////////////////////////
+
 /**
  * Custom validator function:
  * The parameter is either a formControl or a formGroup
@@ -35,6 +60,10 @@ function ratingRangeWithParams(min: number, max: number): ValidatorFn {
     };
 }
 
+////////////////////////////////////////
+// Component class
+////////////////////////////////////////
+
 @Component({
     selector: 'my-signup',
     templateUrl: './app/customers/customer.component.html'
@@ -51,12 +80,13 @@ export class CustomerComponent implements OnInit {
     ngOnInit(): void {
         // Creating the form model with form group
         this.customerForm = this.fb.group({
-            firstName: ['default value', [Validators.required, Validators.minLength(3)]],
-            lastName: ['default value', [Validators.required, Validators.maxLength(50)]],
+            firstName: ['', [Validators.required, Validators.minLength(3)]],
+            lastName: ['', [Validators.required, Validators.maxLength(50)]],
             emailGroup: this.fb.group({
-                email: ['default@email.com', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
-                confirmEmail: ['', Validators.required],
-            }),
+                email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
+                confirmEmail: ['', Validators.required]
+                // Note the following validator function is added to the group, not to the individual formControls
+            }, { validator: emailMatcher }),
             phone: '',
             notification: 'email',
             rating: ['', ratingRangeWithParams(1, 5)],
