@@ -107,7 +107,7 @@
 
                 <div formGroupName="emailGroup" [ngClass]="{'has-error': customerForm.get('emailGroup').errors}">
                     <div class="form-group"
-                         [ngClass]="{'has-error': (customerForm.get('emailGroup.email').touched || customerForm.get('emailGroup.email').dirty) && !customerForm.get('emailGroup.email').valid }">
+                         [ngClass]="{'has-error': emailErrorMsg}">
                         <label class="col-md-2 control-label"
                                for="emailId">Email</label>
 
@@ -118,18 +118,8 @@
                                    placeholder="Email (required)"
                                    formControlName="email"/>
                             <span class="help-block"
-                                  *ngIf="(customerForm.get('emailGroup.email').touched || customerForm.get('emailGroup.email').dirty) && customerForm.get('emailGroup.email').errors">
-                                <span *ngIf="customerForm.get('emailGroup.email').errors.required">
-                                    Please enter your email address.
-                                </span>
-                                <span *ngIf="customerForm.get('emailGroup.email').errors.pattern">
-                                    Please enter a valid email address.
-                                </span>
-
-                                <!-- This one does not work -->
-                                <span *ngIf="customerForm.get('emailGroup.email').errors.email">
-                                    Please enter a valid email address.
-                                </span>
+                                  *ngIf="emailErrorMsg">
+                                {{ emailErrorMsg }}
                             </span>
                         </div>
                     </div>

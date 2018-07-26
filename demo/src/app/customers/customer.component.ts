@@ -46,7 +46,8 @@ function ratingRange(control: AbstractControl): { [key: string]: boolean } | nul
 }
 
 /**
- * If we want to use the validator function with parameters, it needs to be wrapped within a factory function which returns it.
+ * If we want to use the validator function with parameters, it needs to be wrapped within a factory function which
+ * returns it.
  */
 function ratingRangeWithParams(min: number, max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
@@ -73,6 +74,13 @@ export class CustomerComponent implements OnInit {
     customerForm: FormGroup;
     // Data model
     customer: Customer = new Customer();
+    emailErrorMsg: string;
+
+    private validationMessage = {
+        // Note the keys of this object matches the names of HTML validation rules
+        required: 'Please enter your email address',
+        pattern: 'Please enter a valid email address'
+    };
 
     constructor(private fb: FormBuilder) {
     }
@@ -95,6 +103,10 @@ export class CustomerComponent implements OnInit {
 
         // Watches the value changes of notification formControl
         this.customerForm.get('notification').valueChanges.subscribe(value => this.setNotification(value));
+
+        // Watches the value changes of 'email' formControl
+        const emailControl = this.customerForm.get('emailGroup.email');
+        emailControl.valueChanges.subscribe(() => this.setErrMessage(emailControl));
     }
 
     save(): void {
@@ -114,6 +126,18 @@ export class CustomerComponent implements OnInit {
             phoneControl.clearValidators();
         }
         phoneControl.updateValueAndValidity();
+    }
+
+    /**
+     * Update the error message of 'email' formControl if applicable
+     */
+    setErrMessage(control: AbstractControl): void {
+        // Reset error messages first in case there is no error on new user inputs
+        this.emailErrorMsg = '';
+        if ((control.touched || control.dirty) && control.errors) {
+            // Show different error messages depending on different errors
+            this.emailErrorMsg = Object.keys(control.errors).map(key => this.validationMessage[key]).join(' ');
+        }
     }
 
     /*
