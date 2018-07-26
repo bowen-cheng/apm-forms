@@ -92,6 +92,9 @@ export class CustomerComponent implements OnInit {
             rating: ['', ratingRangeWithParams(1, 5)],
             sendCatalog: true
         });
+
+        // Watches the value changes of notification formControl
+        this.customerForm.get('notification').valueChanges.subscribe(value => this.setNotification(value));
     }
 
     save(): void {
