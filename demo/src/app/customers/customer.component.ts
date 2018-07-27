@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import 'rxjs/add/operator/debounceTime';
 
 import { Customer } from './customer';
 
@@ -106,7 +107,8 @@ export class CustomerComponent implements OnInit {
 
         // Watches the value changes of 'email' formControl
         const emailControl = this.customerForm.get('emailGroup.email');
-        emailControl.valueChanges.subscribe(() => this.setErrMessage(emailControl));
+        // The debounceTime operator waits for 1 sec of no events before emitting another event
+        emailControl.valueChanges.debounceTime(1000).subscribe(() => this.setErrMessage(emailControl));
     }
 
     save(): void {
