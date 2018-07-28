@@ -1,66 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
 import { Customer } from './customer';
+import { Functions } from './functions';
 
-////////////////////////////////////////
-// Validator functions (Cross field)
-////////////////////////////////////////
-
-function emailMatcher(control: AbstractControl): { [key: string]: boolean } | null {
-  // Get the form controls by their formControlName
-  const emailControl = control.get('email');
-  const confirmControl = control.get('confirmEmail');
-  if (emailControl.pristine || confirmControl.pristine) {
-    return null;
-  }
-  if (emailControl.value === confirmControl.value) {
-    return null;
-  } else {
-    // key ('match') is the validation rule
-    // this adds the validation error to the *formGroup*, NOT the individual formControl
-    // Because the validator function is added to the group, not to the individual formControls
-    return { 'match': true };
-  }
-}
-
-////////////////////////////////////////
-// Validator functions (single field)
-////////////////////////////////////////
-
-/**
- * Custom validator function:
- * The parameter is either a formControl or a formGroup
- * If validation succeeds without error, the function returns null
- * Otherwise, the function returns a set of key-value pairs,
- * string defines the broken validation rule, value "true" means error exists
- */
-function ratingRange(control: AbstractControl): { [key: string]: boolean } | null {
-  const input = control.value;
-  if (input !== undefined && (isNaN(input) || input < 1 || input > 5)) {
-    // the returned rule name matches the one defined in the HTML (range)
-    return { 'range': true };
-  } else {
-    return null;
-  }
-}
-
-/**
- * If we want to use the validator function with parameters, it needs to be wrapped within a factory function which
- * returns it.
- */
-function ratingRangeWithParams(min: number, max: number): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: boolean } | null => {
-    const input = control.value;
-    if (input !== undefined && (isNaN(input) || input < min || input > max)) {
-      // the returned rule name matches the one defined in the HTML (range)
-      return { 'range': true };
-    } else {
-      return null;
-    }
-  };
-}
 
 ////////////////////////////////////////
 // Component class
@@ -95,10 +39,10 @@ export class CustomerComponent implements OnInit {
         email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
         confirmEmail: ['', Validators.required]
         // Note the following validator function is added to the group, not to the individual formControls
-      }, { validator: emailMatcher }),
+      }, { validator: Functions.emailMatcher }),
       phone: '',
       notification: 'email',
-      rating: ['', ratingRangeWithParams(1, 5)],
+      rating: ['', Functions.ratingRangeWithParams(1, 5)],
       sendCatalog: true
     });
 
@@ -142,22 +86,28 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  /*
+  /**
+   * Demonstrate the usage of setValue (Outdated, does not contain all FormControls in the FormGroup)
+   * setValue function must set all values in the FormGroup
+   */
   populateAll(): void {
-      // attribute names of the object passed into setValue must match the names of the formControl
-      this.customerForm.setValue({
-          firstName: 'Jack',
-          lastName: 'Ma',
-          email: 'Jack.Ma@alibaba.com',
-          sendCatalog: false
-      });
+    // attribute names of the object passed into setValue must match the names of the formControl
+    this.customerForm.setValue({
+      firstName: 'Jack',
+      lastName: 'Ma',
+      email: 'Jack.Ma@alibaba.com',
+      sendCatalog: false
+    });
   }
 
+  /**
+   * Demonstrate the usage of patchValue
+   * patchValue function allows to set only a subset of values in the FormGroup
+   */
   populateEmail(): void {
-      // attribute names of the object passed into setValue must match the names of the formControl
-      this.customerForm.patchValue({
-          email: 'me@aexample.com'
-      });
+    // attribute names of the object passed into setValue must match the names of the formControl
+    this.customerForm.patchValue({
+      email: 'me@example.com'
+    });
   }
-  */
 }
