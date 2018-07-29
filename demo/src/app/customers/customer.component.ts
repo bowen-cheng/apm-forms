@@ -43,7 +43,13 @@ export class CustomerComponent implements OnInit {
       phone: '',
       notification: 'email',
       rating: ['', Functions.ratingRangeWithParams(1, 5)],
-      sendCatalog: true
+      sendCatalog: true,
+      addressType: 'home',
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zip: ''
     });
 
     // Watches the value changes of notification formControl
