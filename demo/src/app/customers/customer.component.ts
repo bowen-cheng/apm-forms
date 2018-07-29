@@ -44,12 +44,7 @@ export class CustomerComponent implements OnInit {
       notification: 'email',
       rating: ['', Functions.ratingRangeWithParams(1, 5)],
       sendCatalog: true,
-      addressType: 'home',
-      street1: '',
-      street2: '',
-      city: '',
-      state: '',
-      zip: ''
+      addressGroup: this.buildAddressesGroup()
     });
 
     // Watches the value changes of notification formControl
@@ -92,6 +87,20 @@ export class CustomerComponent implements OnInit {
     }
   }
 
+  buildAddressesGroup(): FormGroup {
+    return this.fb.group({
+      addressType: 'home',
+      street1: '',
+      street2: '',
+      city: '',
+      state: '',
+      zip: ''
+    });
+  }
+
+////////////////////////////////////////
+// Unused functions below
+////////////////////////////////////////
   /**
    * Demonstrate the usage of setValue (Outdated, does not contain all FormControls in the FormGroup)
    * setValue function must set all values in the FormGroup
