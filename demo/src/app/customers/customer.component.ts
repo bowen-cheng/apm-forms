@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
 import { Customer } from './customer';
@@ -30,6 +30,10 @@ export class CustomerComponent implements OnInit {
   constructor(private fb: FormBuilder) {
   }
 
+  get addressArray(): FormArray {
+    return <FormArray>this.customerForm.get('addressArray');
+  }
+
   ngOnInit(): void {
     // Creating the form model with form group
     this.customerForm = this.fb.group({
@@ -44,7 +48,10 @@ export class CustomerComponent implements OnInit {
       notification: 'email',
       rating: ['', Functions.ratingRangeWithParams(1, 5)],
       sendCatalog: true,
-      addressGroup: this.buildAddressesGroup()
+
+      // Address group is at position 0 of this FormArray
+      // There can be more FormGroups and FormControls in the array, whose position starts from 1
+      addressArray: this.fb.array([this.buildAddressGroup()])
     });
 
     // Watches the value changes of notification formControl
@@ -87,7 +94,11 @@ export class CustomerComponent implements OnInit {
     }
   }
 
-  buildAddressesGroup(): FormGroup {
+  addAddress(): void {
+    this.addressArray.push(this.buildAddressGroup());
+  }
+
+  buildAddressGroup(): FormGroup {
     return this.fb.group({
       addressType: 'home',
       street1: '',
