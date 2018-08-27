@@ -64,8 +64,11 @@ export class CustomerComponent implements OnInit {
   }
 
   save(): void {
+    // Use spread operator to map the values of the form onto our data model (Customer class)
+    // In real world, we will use this.customer when calling an API
+    this.customer = {...this.customerForm.value};
+    console.log(`Saved: ${JSON.stringify(this.customer)}`);
     console.log(this.customerForm);
-    console.log('Saved: ' + JSON.stringify(this.customerForm));
   }
 
   /**
