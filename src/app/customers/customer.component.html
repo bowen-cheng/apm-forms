@@ -9,7 +9,8 @@
               (ngSubmit)="save()"
               [formGroup]="customerForm">
             <!--
-            novalidate means we don't want HTML to do any validation. Instead, hand it over to Angular
+            (With Angular 4+, "novalidate" is automatically added behind the scenes.)
+            "novalidate" means we don't want HTML to do any validation. Instead, hand it over to Angular
             Use property binding for formGroup to bind the form model
             -->
 

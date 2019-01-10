@@ -37,7 +37,8 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     // Creating the form model with form group
     this.customerForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      // The first value provided for each FormControl is the initial value
+      firstName: ['initial value', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.maxLength(50)]],
       emailGroup: this.fb.group({
         email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
