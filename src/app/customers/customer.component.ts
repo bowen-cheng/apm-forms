@@ -56,7 +56,7 @@ export class CustomerComponent implements OnInit {
     });
 
     // Watches the value changes of notification formControl
-    this.customerForm.get('notification').valueChanges.subscribe(value => this.setNotification(value));
+    this.customerForm.get('notification').valueChanges.subscribe(value => this.updatePhoneValidator(value));
 
     // Watches the value changes of 'email' formControl
     const emailControl = this.customerForm.get('emailGroup.email');
@@ -76,13 +76,16 @@ export class CustomerComponent implements OnInit {
    * Demonstrate how to update validators during runtime as per user inputs
    * @param notifyBy
    */
-  setNotification(notifyBy: string): void {
+  updatePhoneValidator(notifyBy: string): void {
     const phoneControl = this.customerForm.get('phone');
     if (notifyBy === 'text') {
+      // if the user chooses to be notified by SMS, phone number is required
       phoneControl.setValidators(Validators.required);
     } else {
+      // Otherwise, phone number is not required
       phoneControl.clearValidators();
     }
+    // Trigger validity update (important)
     phoneControl.updateValueAndValidity();
   }
 
